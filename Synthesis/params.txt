@@ -1,0 +1,74 @@
+# Project info
+project.name=rv32sys
+project.description=Simple RISC-V IMC core
+
+# Device info
+device.family=Trion
+device.device=T20Q100F3
+device.timing_model=C4
+
+# Design info
+design.def_veri_version=verilog_2k
+design.def_vhdl_version=vhdl_2008
+design.unified_flow=false
+
+design.top_module=rv32sys
+design.top_vhdl_arch=struct
+
+design.design_file1.name=../RTL/rv32pack.vhd
+design.design_file2.name=../RTL/biu_ctrl_rtl.vhd
+design.design_file3.name=../RTL/syncfifo.vhd
+design.design_file4.name=../RTL/biu_struct.vhd
+design.design_file5.name=../RTL/rv32dec.vhd
+design.design_file6.name=../RTL/rv32sdiv.vhd
+design.design_file7.name=../RTL/rv32proc.vhd
+design.design_file8.name=../RTL/rv32reg.vhd
+design.design_file9.name=../RTL/htl32rv.vhd
+design.design_file10.name=../Testbench/bootloader.vhd
+design.design_file11.name=../Testbench/redge.vhd 
+design.design_file12.name=../Testbench/sram32.vhd 
+design.design_file13.name=../Testbench/uart.vhd
+design.design_file14.name=../Testbench/rv32sys_struct.vhd
+
+design.design_file1.library=riscv
+design.design_file2.library=riscv
+design.design_file3.library=riscv
+design.design_file4.library=riscv
+design.design_file5.library=riscv
+design.design_file6.library=riscv
+design.design_file7.library=riscv
+design.design_file8.library=riscv
+design.design_file9.library=riscv
+design.design_file10.library=riscv
+design.design_file11.library=riscv
+design.design_file12.library=riscv
+design.design_file13.library=riscv
+design.design_file14.library=riscv                
+
+
+# Constraint info
+constraint.sdc_file=rv32sys.sdc
+# constraint.isf_file=ledtest_io.isf
+
+# Synthesis params
+synthesis.work_dir=work_syn
+
+# speed,area,area2
+synthesis.mode=speed
+
+# 0 1 2
+synthesis.retiming=1
+
+# Place_and_route params
+# 1..5
+place_and_route.placer_effort_level=3
+
+# NULL, TIMING_1,TIMING_2,TIMING_3,CONGESTION_1,CONGESTION_2,CONGESTION_3,POWER_1,POWER_2
+place_and_route.optimization_level=TIMING_2
+
+
+# Bitstream_generation params
+bitstream_generation.mode=passive
+bitstream_generation.width=1
+bitstream_generation.generate_hex=on
+
