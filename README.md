@@ -152,6 +152,76 @@ H:\GitHub\HTL32IMC\Simulation>run coremark
 # Errors: 0, Warnings: 1
 ```
 
+## 3.4 Using the open source nvc simulator
+
+To use the excellent **[open source nvc simulator ](https://github.com/nickg/nvc)** navigate to the simulation_nvc directory and execute the run.bat file. Note for this to work you must have nvc in your search path. 
+
+```
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --version
+nvc 1.17-devel (1.16.0.r72.gf9394abf) (Using LLVM 18.1.8)
+Copyright (C) 2011-2025  Nick Gasson
+This program comes with ABSOLUTELY NO WARRANTY. This is free software, and
+you are welcome to redistribute it under certain conditions. See the GNU
+General Public Licence for details.
+```
+
+To use nvc I modified the code to remove the propriety signalspy calls which are located in the modelsim_lib library. This can easily be done with the VHDL2008 alias construct as you can see in the Testbench\rv32sys_tester_nvc.vhd file in line 59. In this example the local dbuso_cpu_s is connected to the dbuso_cpu signal in the Testbench/DUT.
+
+```VHDL
+alias dbuso_cpu_s is  << signal .rv32sys_tb.U_DUT.dbuso_cpu : std_logic_vector(31 downto 0) >>;	
+```
+
+If you execute the run.bat file it will execute whatever is located in the bootloader.vhd. In my case I compile the coremark test into it, the output should be something like:
+
+```
+H:\GitHub\HTL32IMC\Simulation_nvc>run
+
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/rv32pack.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/biu_ctrl_rtl.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/syncfifo.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/biu_struct.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/rv32dec.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/rv32sdiv.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/rv32proc.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/rv32reg.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../rtl/htl32rv.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/sram32.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/bootloader.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/redge.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/uart.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/rv32sys_struct.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/uartmon.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/rv32sys_tester_nvc.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --std=2008 --work=RISCV  -a ../Testbench/rv32sys_tb_struct_nvc.vhd
+H:\GitHub\HTL32IMC\Simulation_nvc>nvc --ieee-warnings=off  --std=2008 --work=RISCV -e rv32sys_tb -r
+Starting COREMARK 1.0...
+Start time 160
+stop time 4029
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 3869
+Total time (secs): 21
+Iterations/Sec   : 0
+Iterations       : 1
+Compiler version : GCC8.2.0
+Compiler flags   : -MD -Os -mabi=ilp32 -march=rv32imc
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0xe714
+Correct operation validated. See README.md for run and reporting rules.
+** Note: 22284123392300fs+1: EBREAK/ECALL Detected, rtl simulation ended
+   Process :rv32sys_tb:u_test:_p12 at H:\GitHub\HTL32IMC\Testbench\rv32sys_tester_nvc.vhd:91
+** Note: 22284123392300fs+1: STOP called with status 0
+   Procedure STOP [INTEGER] at H:\GitHub\HTL32IMC\lib\std.08\env-body.vhd:27
+   Process :rv32sys_tb:u_test:_p12 at H:\GitHub\HTL32IMC\Testbench\rv32sys_tester_nvc.vhd:125
+```
+
+I would highly recommend you try the nvc simulator,it supports VHDL2008, part of VHDL2019 (more than commercial simulators!), PSL, VHPI etc. What nvc needs is a great debugger something simular to Visualizer/Verdi etc.
+
+
 # 4. Synthesis
 
 For synthesis a filelist is available in the RTL directory. By default compressed instructions, multiply/divide and counters are enabled/disabled by top level generics.
